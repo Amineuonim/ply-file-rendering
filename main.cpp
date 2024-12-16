@@ -6,9 +6,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <stdio.h>
+#include <unistd.h>
 
 // PLY object loader
-ply_object test("path/to/your/.ply/file");
+ply_object test("/home/omni/Desktop/me/c_r/artemis/untitled.ply");
 
 // Callback to handle window resizing
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -46,32 +47,15 @@ int main() {
 
     // Load the PLY object and shaders
     test.initialize();
+    
     shader_program shader;
     shader.createShaderProgram(
-        "path/to/basicvertex.glsl",
-        "path/to/basicfragment.glsl"
+        "/home/omni/Desktop/me/c_r/artemis/shaders/basicvertex.glsl",
+        "/home/omni/Desktop/me/c_r/artemis/shaders/basicfragment.glsl"
     );
     glUseProgram(shader.getprogramid());
 
-    // Setup the view and projection matrices
-    glm::mat4 view = glm::lookAt(
-        glm::vec3(0.0f, 0.0f, 5.0f), // Camera position
-        glm::vec3(0.0f, 0.0f, 0.0f), // Look at target
-        glm::vec3(0.0f, 1.0f, 0.0f)  // Up vector
-    );
 
-    glm::mat4 projection = glm::perspective(
-        glm::radians(45.0f), // Field of view
-        800.0f / 600.0f,     // Aspect ratio
-        0.1f,                // Near clipping plane
-        100.0f               // Far clipping plane
-    );
-
-    // Pass view and projection matrices to the shader
-    GLint viewLoc = glGetUniformLocation(shader.getprogramid(), "view");
-    GLint projLoc = glGetUniformLocation(shader.getprogramid(), "projection");
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
     // Main rendering loop
     while (!glfwWindowShouldClose(window)) {
